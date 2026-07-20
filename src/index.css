@@ -1,0 +1,94 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    color-scheme: light dark;
+  }
+
+  html,
+  body,
+  #root {
+    height: 100%;
+  }
+
+  body {
+    @apply bg-surface-muted text-slate-800 antialiased;
+    -webkit-tap-highlight-color: transparent;
+    overscroll-behavior-y: none;
+  }
+
+  .dark body {
+    @apply bg-surface-dark text-slate-100;
+  }
+
+  /* respeita a área segura de aparelhos com notch */
+  .safe-bottom {
+    padding-bottom: env(safe-area-inset-bottom);
+  }
+  .safe-top {
+    padding-top: env(safe-area-inset-top);
+  }
+}
+
+@layer components {
+  .card {
+    @apply rounded-2xl bg-surface shadow-card border border-slate-100/80;
+  }
+  .dark .card {
+    @apply bg-surface-dark-muted border-white/5;
+  }
+
+  .input {
+    @apply w-full rounded-xl border border-slate-200 bg-white px-4 py-3 text-base text-slate-800
+      placeholder:text-slate-400 outline-none transition
+      focus:border-brand-500 focus:ring-2 focus:ring-brand-500/20;
+  }
+  .dark .input {
+    @apply border-white/10 bg-white/5 text-slate-100 placeholder:text-slate-500;
+  }
+
+  .label {
+    @apply mb-1.5 block text-sm font-medium text-slate-600;
+  }
+  .dark .label {
+    @apply text-slate-300;
+  }
+
+  .btn {
+    @apply inline-flex items-center justify-center gap-2 rounded-xl px-4 py-3 text-sm font-semibold
+      transition active:scale-[0.98] disabled:opacity-50 disabled:pointer-events-none;
+  }
+  .btn-primary {
+    @apply btn bg-brand-600 text-white shadow-glow hover:bg-brand-700;
+  }
+  .btn-secondary {
+    @apply btn bg-slate-100 text-slate-700 hover:bg-slate-200;
+  }
+  .dark .btn-secondary {
+    @apply bg-white/10 text-slate-100 hover:bg-white/20;
+  }
+  .btn-ghost {
+    @apply btn text-slate-500 hover:bg-slate-100;
+  }
+  .dark .btn-ghost {
+    @apply text-slate-300 hover:bg-white/10;
+  }
+
+  .chip {
+    @apply inline-flex items-center gap-1.5 rounded-full px-3 py-1.5 text-sm font-medium transition;
+  }
+}
+
+/* Barra de rolagem discreta */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+::-webkit-scrollbar-thumb {
+  @apply rounded-full bg-slate-300/60;
+}
+.dark ::-webkit-scrollbar-thumb {
+  @apply bg-white/10;
+}
