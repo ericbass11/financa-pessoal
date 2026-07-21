@@ -3,6 +3,7 @@ import { AuthProvider, useAuth } from './context/AuthContext'
 import { FinanceProvider } from './context/FinanceContext'
 import { ModalsProvider } from './context/ModalsContext'
 import { isSupabaseConfigured } from './lib/supabase'
+import { AutoLock } from './components/AutoLock'
 import { Layout } from './components/Layout'
 import { FullPageLoader } from './components/ui'
 import { Login } from './pages/Login'
@@ -31,18 +32,20 @@ function ProtectedApp() {
   return (
     <FinanceProvider>
       <ModalsProvider>
-        <Routes>
-          <Route element={<Layout />}>
-            <Route index element={<Dashboard />} />
-            <Route path="transacoes" element={<Transactions />} />
-            <Route path="contas" element={<Accounts />} />
-            <Route path="mais" element={<More />} />
-            <Route path="orcamentos" element={<Budgets />} />
-            <Route path="metas" element={<Goals />} />
-            <Route path="categorias" element={<Categories />} />
-            <Route path="*" element={<Navigate to="/" replace />} />
-          </Route>
-        </Routes>
+        <AutoLock>
+          <Routes>
+            <Route element={<Layout />}>
+              <Route index element={<Dashboard />} />
+              <Route path="transacoes" element={<Transactions />} />
+              <Route path="contas" element={<Accounts />} />
+              <Route path="mais" element={<More />} />
+              <Route path="orcamentos" element={<Budgets />} />
+              <Route path="metas" element={<Goals />} />
+              <Route path="categorias" element={<Categories />} />
+              <Route path="*" element={<Navigate to="/" replace />} />
+            </Route>
+          </Routes>
+        </AutoLock>
       </ModalsProvider>
     </FinanceProvider>
   )
