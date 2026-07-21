@@ -2,8 +2,13 @@ import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
 import { VitePWA } from 'vite-plugin-pwa'
 
+// Base path: em produção no GitHub Pages usamos o subcaminho do repositório
+// (definido via env GH_PAGES_BASE no workflow). Em dev fica em '/'.
+const base = process.env.GH_PAGES_BASE || '/'
+
 // https://vitejs.dev/config/
 export default defineConfig({
+  base,
   build: {
     rollupOptions: {
       output: {
@@ -28,8 +33,8 @@ export default defineConfig({
         background_color: '#0f172a',
         display: 'standalone',
         orientation: 'portrait',
-        start_url: '/',
-        scope: '/',
+        start_url: '.',
+        scope: '.',
         lang: 'pt-BR',
         categories: ['finance', 'productivity'],
         icons: [

@@ -52,7 +52,7 @@ export default function App() {
   if (!isSupabaseConfigured) return <SetupNeeded />
 
   return (
-    <BrowserRouter>
+    <BrowserRouter basename={import.meta.env.BASE_URL}>
       <AuthProvider>
         <ProtectedApp />
       </AuthProvider>

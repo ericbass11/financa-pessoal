@@ -97,6 +97,23 @@ Qualquer host de site estático serve. Exemplo com **Vercel**:
 4. Em **Environment Variables**, adicione `VITE_SUPABASE_URL` e `VITE_SUPABASE_ANON_KEY`.
 5. **Deploy**. Depois adicione a URL de produção em **Supabase → Authentication → URL Configuration → Site URL / Redirect URLs**.
 
+### GitHub Pages (via GitHub Actions) — já configurado
+
+Este repositório inclui o workflow [`.github/workflows/deploy.yml`](./.github/workflows/deploy.yml), que faz o build e publica no GitHub Pages automaticamente a cada push.
+
+Para ativar:
+
+1. **Secrets:** vá em **Settings → Secrets and variables → Actions → New repository secret** e crie:
+   - `VITE_SUPABASE_URL` — a URL do seu projeto Supabase
+   - `VITE_SUPABASE_ANON_KEY` — a chave `anon` `public`
+   > Sem esses secrets o site publica, mas mostra a tela "Configuração necessária".
+2. **Ative o Pages:** **Settings → Pages → Build and deployment → Source: GitHub Actions**.
+3. **Dispare o deploy:** faça um push (ou rode o workflow manualmente em **Actions → Deploy PWA para GitHub Pages → Run workflow**).
+4. O site fica em `https://<seu-usuário>.github.io/financa-pessoal/`.
+5. Adicione essa URL em **Supabase → Authentication → URL Configuration → Site URL / Redirect URLs**.
+
+> O `base` do Vite (`/financa-pessoal/`) é injetado no build pelo workflow via a variável `GH_PAGES_BASE`, então localmente o app continua rodando em `/`. O arquivo `404.html` (cópia do `index.html`) garante que rotas internas funcionem ao recarregar a página.
+
 ---
 
 ## 🗂️ Estrutura do projeto
