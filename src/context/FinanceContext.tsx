@@ -129,7 +129,10 @@ export function FinanceProvider({ children }: { children: ReactNode }) {
     const [txRes, budgetRes] = await Promise.all([
       supabase
         .from('transactions')
-        .select('*, category:categories(*), account:accounts(id,name,color,icon)')
+        // "!account_id" desambigua o embed: transactions tem duas FKs para
+        // accounts (account_id e transfer_account_id), então é preciso indicar
+        // qual relação usar, senão o PostgREST recusa a query.
+        .select('*, category:categories(*), account:accounts!account_id(id,name,color,icon)')
         .gte('date', start)
         .lte('date', end)
         .order('date', { ascending: false })
