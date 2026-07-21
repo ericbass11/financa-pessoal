@@ -1,4 +1,4 @@
-import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom'
+import { HashRouter, Navigate, Route, Routes } from 'react-router-dom'
 import { AuthProvider, useAuth } from './context/AuthContext'
 import { FinanceProvider } from './context/FinanceContext'
 import { ModalsProvider } from './context/ModalsContext'
@@ -52,10 +52,10 @@ export default function App() {
   if (!isSupabaseConfigured) return <SetupNeeded />
 
   return (
-    <BrowserRouter basename={import.meta.env.BASE_URL}>
+    <HashRouter>
       <AuthProvider>
         <ProtectedApp />
       </AuthProvider>
-    </BrowserRouter>
+    </HashRouter>
   )
 }

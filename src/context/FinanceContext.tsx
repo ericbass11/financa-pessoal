@@ -142,15 +142,32 @@ export function FinanceProvider({ children }: { children: ReactNode }) {
     setBudgets((budgetRes.data as Budget[]) ?? [])
   }, [userId, selectedMonth])
 
+  // Trata erros de carregamento. Se for falha de autenticação (token/JWT
+  // expirado → 401), desloga para o usuário reautenticar em vez de ficar
+  // preso numa sessão quebrada.
+  const handleLoadError = useCallback((e: unknown) => {
+    const err = e as { code?: string; message?: string } | null
+    const msg = err?.message || 'Erro ao carregar dados.'
+    const isAuthError =
+      err?.code === 'PGRST301' ||
+      err?.code === '401' ||
+      /jwt|unauthorized|token|expired|não autenticado/i.test(msg)
+    if (isAuthError) {
+      void supabase.auth.signOut()
+      return
+    }
+    setError(msg)
+  }, [])
+
   const refresh = useCallback(async () => {
     if (!userId) return
     setError(null)
     try {
       await Promise.all([loadStatic(), loadMonthly()])
     } catch (e) {
-      setError(e instanceof Error ? e.message : 'Erro ao carregar dados.')
+      handleLoadError(e)
     }
-  }, [userId, loadStatic, loadMonthly])
+  }, [userId, loadStatic, loadMonthly, handleLoadError])
 
   useEffect(() => {
     if (!userId) {
@@ -168,7 +185,7 @@ export function FinanceProvider({ children }: { children: ReactNode }) {
       try {
         await Promise.all([loadStatic(), loadMonthly()])
       } catch (e) {
-        if (active) setError(e instanceof Error ? e.message : 'Erro ao carregar dados.')
+        if (active) handleLoadError(e)
       } finally {
         if (active) setLoading(false)
       }
@@ -176,7 +193,7 @@ export function FinanceProvider({ children }: { children: ReactNode }) {
     return () => {
       active = false
     }
-  }, [userId, loadStatic, loadMonthly])
+  }, [userId, loadStatic, loadMonthly, handleLoadError])
 
   const requireUser = (): string => {
     if (!userId) throw new Error('Usuário não autenticado.')
